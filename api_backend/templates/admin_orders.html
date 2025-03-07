@@ -1,0 +1,37 @@
+
+<!-- admin_orders.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Orders</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+    <h2>Orders</h2>
+    <a href="{{ url_for('admin_dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+    <table class="table table-bordered mt-3">
+        <tr>
+            <th>ID</th><th>User ID</th><th>Items</th><th>Status</th><th>Date & Time</th>th>Action</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.user_id }}</td>
+            <td>{{ order.items }}</td>
+            <td>{{ order.date_time.strftime('%Y-%m-%d %H:%M:%S') }}</td> <!-- ✅ Format timestamp -->
+            <td>{{ order.status }}</td>
+            <td>
+               <form action="{{ url_for('update_order', order_id=order.id) }}" method="POST">
+    <select name="status">
+        <option value="Pending" {% if order.status == 'Pending' %}selected{% endif %}>Pending</option>
+        <option value="Completed" {% if order.status == 'Completed' %}selected{% endif %}>Completed</option>
+    </select>
+    <button type="submit">Update</button>
+</form>
+
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
